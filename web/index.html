@@ -4,20 +4,136 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FORWARD DEPLOYED</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <header id="hud" hidden>
-      <div class="meters">
-        <span class="meter" id="m-burn"></span>
-        <span class="meter" id="m-cred"></span>
-        <span class="meter" id="m-act"></span>
-      </div>
-      <div class="stats" id="hud-stats"></div>
-    </header>
+    <section id="home" aria-label="Title">
+      <div class="home-scene" aria-hidden="true">
+        <div class="home-sky"></div>
+        <div class="home-fog home-fog--far"></div>
+        <svg class="home-tower" viewBox="0 0 480 720" preserveAspectRatio="xMidYMax meet">
+          <defs>
+            <linearGradient id="towerFace" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1a1714" />
+              <stop offset="45%" stop-color="#26211c" />
+              <stop offset="100%" stop-color="#15120f" />
+            </linearGradient>
+            <linearGradient id="towerSide" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#0e0c0a" />
+              <stop offset="100%" stop-color="#18150f" />
+            </linearGradient>
+          </defs>
+          <!-- distant block -->
+          <rect x="40" y="220" width="110" height="500" fill="#12100e" opacity="0.85" />
+          <g class="windows windows--dim" fill="#c9a227">
+            <rect x="52" y="248" width="8" height="11" opacity="0.18" />
+            <rect x="68" y="248" width="8" height="11" opacity="0.08" />
+            <rect x="84" y="280" width="8" height="11" opacity="0.22" />
+            <rect x="100" y="312" width="8" height="11" opacity="0.12" />
+            <rect x="52" y="360" width="8" height="11" opacity="0.15" />
+            <rect x="84" y="424" width="8" height="11" opacity="0.2" />
+            <rect x="68" y="488" width="8" height="11" opacity="0.1" />
+            <rect x="100" y="552" width="8" height="11" opacity="0.16" />
+          </g>
+          <!-- main tower -->
+          <polygon points="150,80 340,80 360,720 130,720" fill="url(#towerFace)" />
+          <polygon points="340,80 420,140 420,720 360,720" fill="url(#towerSide)" />
+          <rect x="150" y="80" width="190" height="6" fill="#2a241c" />
+          <g class="windows windows--main" fill="#c9a227">
+            <rect class="w" x="172" y="110" width="14" height="18" opacity="0.55" />
+            <rect class="w" x="200" y="110" width="14" height="18" opacity="0.2" />
+            <rect class="w" x="228" y="110" width="14" height="18" opacity="0.7" />
+            <rect class="w" x="256" y="110" width="14" height="18" opacity="0.15" />
+            <rect class="w" x="284" y="110" width="14" height="18" opacity="0.45" />
 
-    <main id="story" aria-live="polite"></main>
-    <nav id="choices"></nav>
+            <rect class="w" x="172" y="160" width="14" height="18" opacity="0.25" />
+            <rect class="w" x="200" y="160" width="14" height="18" opacity="0.65" />
+            <rect class="w" x="228" y="160" width="14" height="18" opacity="0.18" />
+            <rect class="w" x="256" y="160" width="14" height="18" opacity="0.5" />
+            <rect class="w" x="284" y="160" width="14" height="18" opacity="0.3" />
+
+            <rect class="w" x="172" y="210" width="14" height="18" opacity="0.4" />
+            <rect class="w" x="200" y="210" width="14" height="18" opacity="0.12" />
+            <rect class="w" x="228" y="210" width="14" height="18" opacity="0.8" />
+            <rect class="w" x="256" y="210" width="14" height="18" opacity="0.35" />
+            <rect class="w" x="284" y="210" width="14" height="18" opacity="0.22" />
+
+            <rect class="w" x="172" y="280" width="14" height="18" opacity="0.15" />
+            <rect class="w" x="200" y="280" width="14" height="18" opacity="0.48" />
+            <rect class="w" x="228" y="280" width="14" height="18" opacity="0.28" />
+            <rect class="w" x="256" y="280" width="14" height="18" opacity="0.72" />
+            <rect class="w" x="284" y="280" width="14" height="18" opacity="0.2" />
+
+            <rect class="w floor4" x="172" y="360" width="14" height="18" opacity="0.9" />
+            <rect class="w floor4" x="200" y="360" width="14" height="18" opacity="0.85" />
+            <rect class="w floor4" x="228" y="360" width="14" height="18" opacity="1" />
+            <rect class="w floor4" x="256" y="360" width="14" height="18" opacity="0.75" />
+            <rect class="w floor4" x="284" y="360" width="14" height="18" opacity="0.95" />
+
+            <rect class="w" x="172" y="430" width="14" height="18" opacity="0.3" />
+            <rect class="w" x="200" y="430" width="14" height="18" opacity="0.55" />
+            <rect class="w" x="228" y="430" width="14" height="18" opacity="0.18" />
+            <rect class="w" x="256" y="430" width="14" height="18" opacity="0.42" />
+            <rect class="w" x="284" y="430" width="14" height="18" opacity="0.25" />
+
+            <rect class="w" x="172" y="500" width="14" height="18" opacity="0.2" />
+            <rect class="w" x="200" y="500" width="14" height="18" opacity="0.15" />
+            <rect class="w" x="228" y="500" width="14" height="18" opacity="0.6" />
+            <rect class="w" x="256" y="500" width="14" height="18" opacity="0.35" />
+            <rect class="w" x="284" y="500" width="14" height="18" opacity="0.12" />
+
+            <rect class="w" x="172" y="570" width="14" height="18" opacity="0.45" />
+            <rect class="w" x="200" y="570" width="14" height="18" opacity="0.22" />
+            <rect class="w" x="228" y="570" width="14" height="18" opacity="0.38" />
+            <rect class="w" x="256" y="570" width="14" height="18" opacity="0.7" />
+            <rect class="w" x="284" y="570" width="14" height="18" opacity="0.28" />
+          </g>
+          <!-- floor plate mark -->
+          <line x1="155" y1="390" x2="335" y2="390" stroke="#c9a227" stroke-opacity="0.25" stroke-width="1" />
+        </svg>
+        <div class="home-fog home-fog--near"></div>
+        <div class="home-sodium"></div>
+        <canvas id="rain" class="home-rain"></canvas>
+        <div class="home-grain"></div>
+        <div class="home-vignette"></div>
+      </div>
+
+      <div class="home-copy">
+        <p class="home-brand">Forward<br />Deployed</p>
+        <h1 class="home-headline">One client. One deployment. Five acts.</h1>
+        <p class="home-lede">
+          The badge is printed. Somewhere on the fourth floor, a&nbsp;mainframe is going to fall over on Thursday.
+        </p>
+        <button type="button" id="begin" class="home-cta">Begin engagement</button>
+        <p class="home-whisper" aria-hidden="true">
+          <span class="who">Shadow Audit</span>
+          The badge says consultant. The floor already knows your&nbsp;name.
+        </p>
+      </div>
+
+      <button type="button" id="rain-toggle" class="rain-toggle" aria-pressed="false" aria-label="Play rain ambience">
+        Rain
+      </button>
+    </section>
+
+    <audio id="rain-audio" src="./audio/light-rain.mp3" loop preload="auto"></audio>
+
+    <div id="game" hidden>
+      <header id="hud" hidden>
+        <div class="meters">
+          <span class="meter" id="m-burn"></span>
+          <span class="meter" id="m-cred"></span>
+          <span class="meter" id="m-act"></span>
+        </div>
+        <div class="stats" id="hud-stats"></div>
+      </header>
+
+      <main id="story" aria-live="polite"></main>
+      <nav id="choices"></nav>
+    </div>
 
     <script type="module" src="./main.js"></script>
   </body>
