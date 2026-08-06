@@ -1,0 +1,164 @@
+:root {
+  --bg: #14110f;
+  --paper: #1c1917;
+  --ink: #d8cfc4;
+  --dim: #8a8078;
+  --rule: #2e2825;
+  --accent: #c9a227;
+  --pass: #7ea86a;
+  --fail: #b5533f;
+
+  --legacy_whisperer: #6f9dc4;
+  --shadow_audit: #b08bc4;
+  --roi_rhetoric: #c9a227;
+  --human_in_the_loop: #d98f6b;
+  --procurement_armor: #7fa8a0;
+  --prompt_syntax: #a3b06a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 ui-serif, Georgia, "Times New Roman", serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.25rem 4rem;
+}
+
+/* --- HUD --- */
+#hud {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  max-width: 46rem;
+  background: var(--bg);
+  padding: 0.9rem 0 0.7rem;
+  z-index: 10;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.meters { display: flex; gap: 1.25rem; color: var(--dim); }
+.meter b { color: var(--ink); font-weight: 600; }
+.meter.low b { color: var(--fail); }
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--dim);
+}
+.stats span b { color: var(--ink); font-weight: 600; }
+
+/* Fades body text out beneath the sticky HUD instead of letting it collide. */
+#hud::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 1.25rem;
+  background: linear-gradient(var(--bg), transparent);
+  pointer-events: none;
+}
+
+/* --- STORY --- */
+#story { width: 100%; max-width: 46rem; padding-top: 1rem; }
+
+p { margin: 0 0 1.05rem; }
+p.title {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 1.5rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin: 2rem 0 1.5rem;
+}
+
+/* Passive skill voices — the Disco inserts. */
+p.voice {
+  border-left: 2px solid currentColor;
+  padding: 0.15rem 0 0.15rem 0.9rem;
+  margin-left: 0.1rem;
+  font-style: italic;
+  color: var(--dim);
+}
+p.voice .who {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-style: normal;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.15rem;
+}
+
+/* Roll results. */
+p.roll {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.6rem;
+  display: inline-block;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+p.roll.success { color: var(--pass); border-color: color-mix(in srgb, var(--pass) 45%, transparent); }
+p.roll.failure { color: var(--fail); border-color: color-mix(in srgb, var(--fail) 45%, transparent); }
+
+p.statblock, p.meters-line {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0;
+}
+p.milestone, p.allocator { color: var(--accent); font-style: italic; }
+p.ending { color: var(--fail); }
+
+/* --- CHOICES --- */
+#choices {
+  width: 100%;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+button.choice {
+  all: unset;
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.94rem;
+  transition: border-color 0.12s, background 0.12s;
+}
+button.choice:hover, button.choice:focus-visible {
+  border-color: var(--accent);
+  background: #221e1b;
+}
+button.choice .tier {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  margin-right: 0.55rem;
+}
+button.choice.red { border-color: color-mix(in srgb, var(--fail) 50%, transparent); }
+button.choice.red .tier { color: var(--fail); }
+
+@media (prefers-reduced-motion: reduce) {
+  button.choice { transition: none; }
+}

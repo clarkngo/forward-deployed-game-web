@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FORWARD DEPLOYED</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header id="hud" hidden>
+      <div class="meters">
+        <span class="meter" id="m-burn"></span>
+        <span class="meter" id="m-cred"></span>
+        <span class="meter" id="m-act"></span>
+      </div>
+      <div class="stats" id="hud-stats"></div>
+    </header>
+
+    <main id="story" aria-live="polite"></main>
+    <nav id="choices"></nav>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
