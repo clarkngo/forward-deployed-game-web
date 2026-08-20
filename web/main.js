@@ -283,3 +283,81 @@ async function startGame() {
 }
 
 beginBtn.addEventListener('click', startGame);
+
+/* --- Dev panel: jump to any scene, poke stats, for testing ------------- */
+// Tunnel-only knots (character_creation, milestone, allocate_points) can't
+// be jumped to directly — see story/system/dev.ink for why — so they're
+// listed here via their dev_* wrapper path instead.
+// Add an entry whenever a new scene's entry knot is written.
+const DEV_SCENES = [
+  { path: 'title', label: 'Title' },
+  { path: 'dev_character_creation', label: 'Character Creation' },
+  { path: 'brenda_desk_arrival', label: 'Brenda — Arrival' },
+  { path: 'brenda_hub', label: 'Brenda — Hub' },
+  { path: 'brenda_deep_dive', label: 'Brenda — Deep Dive (Column G)' },
+  { path: 'dev_milestone', label: 'Milestone (act boundary)' },
+  { path: 'scene_end', label: 'Scene Router' },
+  { path: 'act_1_end', label: 'Act 1 End' },
+  { path: 'engagement_ends', label: 'Fail State' },
+];
+
+const devToggle = document.getElementById('devpanel-toggle');
+const devBody = document.getElementById('devpanel-body');
+const devScenes = document.getElementById('devpanel-scenes');
+const devStats = document.getElementById('devpanel-stats');
+const devApplyStats = document.getElementById('devpanel-apply-stats');
+const devRestart = document.getElementById('devpanel-restart');
+
+devToggle?.addEventListener('click', () => {
+  const opening = devBody.hidden;
+  devBody.hidden = !opening;
+  devToggle.setAttribute('aria-expanded', String(opening));
+  if (opening) renderDevStatInputs();
+});
+
+function jumpToScene(path) {
+  if (document.body.contains(homeEl)) {
+    stopRain?.();
+    homeEl.remove();
+    gameEl.hidden = false;
+  }
+  storyEl.replaceChildren();
+  choicesEl.replaceChildren();
+  story.ChoosePathString(path);
+  advance();
+}
+
+for (const scene of DEV_SCENES) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'devpanel-item';
+  btn.textContent = scene.label;
+  btn.addEventListener('click', () => jumpToScene(scene.path));
+  devScenes.append(btn);
+}
+
+function renderDevStatInputs() {
+  devStats.replaceChildren();
+  for (const s of STATS) {
+    const row = document.createElement('label');
+    row.className = 'devpanel-stat-row';
+    const name = document.createElement('span');
+    name.textContent = SHORT[s];
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.dataset.stat = s;
+    input.value = story.variablesState[s];
+    row.append(name, input);
+    devStats.append(row);
+  }
+}
+
+devApplyStats?.addEventListener('click', () => {
+  for (const input of devStats.querySelectorAll('input[data-stat]')) {
+    const n = Number(input.value);
+    if (Number.isFinite(n)) story.variablesState[input.dataset.stat] = n;
+  }
+  if (!gameEl.hidden) updateHud();
+});
+
+devRestart?.addEventListener('click', () => location.reload());

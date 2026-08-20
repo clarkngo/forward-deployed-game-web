@@ -4,6 +4,7 @@
 
 INCLUDE system/checks.ink
 INCLUDE system/stats.ink
+INCLUDE system/dev.ink
 INCLUDE scenes/brenda_floor4.ink
 
 -> title
