@@ -135,6 +135,26 @@
       <nav id="choices"></nav>
     </div>
 
+    <aside id="devpanel" class="devpanel">
+      <button type="button" id="devpanel-toggle" class="devpanel-toggle" aria-expanded="false">
+        Dev
+      </button>
+      <div id="devpanel-body" class="devpanel-body" hidden>
+        <section class="devpanel-section">
+          <h2>Jump to scene</h2>
+          <div id="devpanel-scenes" class="devpanel-scenes"></div>
+        </section>
+        <section class="devpanel-section">
+          <h2>Stats</h2>
+          <div id="devpanel-stats" class="devpanel-stats"></div>
+          <button type="button" id="devpanel-apply-stats" class="devpanel-apply">Apply</button>
+        </section>
+        <section class="devpanel-section">
+          <button type="button" id="devpanel-restart" class="devpanel-restart">Restart from scratch</button>
+        </section>
+      </div>
+    </aside>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>

@@ -19,12 +19,13 @@ story/
   main.ink            entry point, INCLUDEs, act routing
   system/checks.ink   dice, difficulty ladder, white/red checks
   system/stats.ink    the six stats, point-buy, milestones, meters
+  system/dev.ink      tunnel wrappers so the dev panel can jump anywhere
   scenes/*.ink        one file per scene
 scripts/
-  build-ink.mjs       story/main.ink -> web/story.json
+  build-ink.mjs       story/main.ink -> web/public/story.json
   smoke.mjs           headless playthrough, prints a transcript
   coverage.mjs        plays every archetype N times; fails if one is locked out
-web/                  vite player, tag-aware renderer
+web/                  vite player, tag-aware renderer, dev panel
 ```
 
 ## The six stats
@@ -108,6 +109,26 @@ blocking progress, so a failed check stays playable.
 - **Every scene needs at least two routes into its main content.** A scene
   gated on one stat is unplayable for most builds — `npm test` enforces this
   by playing all six archetypes and failing if any never reaches the content.
+
+## Dev panel
+
+The "Dev" tab (bottom-right, in the running app) jumps straight to any scene
+instead of replaying from the title screen, and lets you poke stat values
+before jumping so gated checks are reachable on demand.
+
+- **Jump to scene** calls `story.ChoosePathString(path)`, which resets the
+  call stack. That's safe for ordinary knots, but a **tunnel-only** knot
+  (entered via `-> knot ->`, returning via `->->`) crashes on that final
+  `->->` if jumped to directly — there's no call frame to pop. `character_creation`,
+  `milestone`, and `allocate_points` are all tunnel-only, so they're not
+  listed directly; `system/dev.ink` wraps each in a `dev_*` knot that calls it
+  properly and diverts to `END` after. **When you add a new tunnel-only
+  knot, add a wrapper for it there** — and add the entry point (wrapped or
+  not) to `DEV_SCENES` in `web/main.js`.
+- **Stats** sets `story.variablesState[...]` directly. Applying doesn't
+  re-render the current choice list (Ink only evaluates gates at a divert
+  point) — jump to the scene again after applying to see gated choices appear.
+- **Restart** is just `location.reload()`.
 
 ## Renderer tags
 

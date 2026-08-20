@@ -500,3 +500,140 @@ button.choice.red .tier { color: var(--fail); }
   button.choice { transition: none; }
   #game { animation: none; }
 }
+
+/* =========================================================
+   DEV PANEL — scene jump + stat overrides, for testing
+   ========================================================= */
+
+.devpanel {
+  position: fixed;
+  z-index: 100;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+}
+
+.devpanel-toggle {
+  appearance: none;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  color: var(--dim);
+  font-family: inherit;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.devpanel-toggle:hover, .devpanel-toggle:focus-visible {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+  outline: none;
+}
+.devpanel-toggle[aria-expanded="true"] {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.devpanel-body {
+  width: 16rem;
+  max-height: min(28rem, 70vh);
+  overflow-y: auto;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.devpanel-body[hidden] { display: none; }
+
+.devpanel-section h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.devpanel-scenes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.devpanel-item {
+  all: unset;
+  cursor: pointer;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+.devpanel-item:hover, .devpanel-item:focus-visible {
+  border-color: var(--accent);
+  background: #221e1b;
+  outline: none;
+}
+
+.devpanel-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.devpanel-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+.devpanel-stat-row input {
+  width: 3.2rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.2rem 0.35rem;
+  border-radius: 3px;
+}
+
+.devpanel-apply, .devpanel-restart {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule));
+  border-radius: 3px;
+  color: var(--accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.devpanel-apply:hover, .devpanel-restart:hover,
+.devpanel-apply:focus-visible, .devpanel-restart:focus-visible {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  outline: none;
+}
+.devpanel-restart {
+  color: var(--fail);
+  border-color: color-mix(in srgb, var(--fail) 45%, var(--rule));
+}
+.devpanel-restart:hover, .devpanel-restart:focus-visible {
+  background: color-mix(in srgb, var(--fail) 12%, transparent);
+}
