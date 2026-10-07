@@ -381,9 +381,26 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.meters { display: flex; gap: 1.25rem; color: var(--dim); }
+.meters { display: flex; align-items: center; gap: 1.25rem; color: var(--dim); }
 .meter b { color: var(--ink); font-weight: 600; }
 .meter.low b { color: var(--fail); }
+.sfx-toggle {
+  margin-left: auto;
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0.2rem 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--dim);
+  cursor: pointer;
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--dim) 60%, transparent);
+}
+.sfx-toggle[aria-pressed="true"] { color: var(--accent); text-decoration: none; }
+.sfx-toggle:hover,
+.sfx-toggle:focus-visible { color: var(--ink); outline: none; }
 .stats {
   display: flex;
   flex-wrap: wrap;

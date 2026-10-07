@@ -1,4 +1,5 @@
 import { Story } from 'inkjs';
+import { play as sfx, isMuted, setMuted } from './sfx.js';
 
 const STATS = [
   'LEGACY_WHISPERER',
@@ -89,6 +90,7 @@ playRain().then(started => {
 
 rainToggle?.addEventListener('click', async e => {
   e.stopPropagation();
+  sfx('toggle');
   if (!rainAudio) return;
   if (rainAudio.paused) await playRain();
   else pauseRain();
@@ -166,6 +168,14 @@ function tagged(tags, name) {
   return tags.includes(name);
 }
 
+// Sound cue for a rendered line, if its tags call for one.
+function cueFor(tags) {
+  if (tagged(tags, 'roll')) return tagged(tags, 'success') ? 'success' : 'failure';
+  if (tagged(tags, 'milestone')) return 'milestone';
+  if (tagged(tags, 'ending')) return 'ending';
+  return null;
+}
+
 function render(text, tags) {
   const p = document.createElement('p');
 
@@ -230,7 +240,10 @@ function renderChoice(choice, index) {
     btn.textContent = text;
   }
 
+  btn.addEventListener('pointerenter', () => sfx('hover'));
+  btn.addEventListener('focus', () => sfx('hover'));
   btn.addEventListener('click', () => {
+    sfx(isRed ? 'chooseRed' : 'choose');
     story.ChooseChoiceIndex(index);
     choicesEl.replaceChildren();
     advance();
@@ -239,10 +252,15 @@ function renderChoice(choice, index) {
 }
 
 function advance() {
+  let cue = null;
   while (story.canContinue) {
     const text = story.Continue().trim();
-    if (text) render(text, story.currentTags ?? []);
+    const tags = story.currentTags ?? [];
+    if (text) render(text, tags);
+    cue = cueFor(tags) ?? cue;
   }
+  // Let the choice click land before the result sounds.
+  if (cue) sfx(cue, 0.12);
   updateHud();
 
   choicesEl.replaceChildren(...story.currentChoices.map(renderChoice));
@@ -257,6 +275,7 @@ function advance() {
 
 async function startGame() {
   beginBtn.disabled = true;
+  sfx('begin');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const reveal = () => {
@@ -284,6 +303,23 @@ async function startGame() {
 
 beginBtn.addEventListener('click', startGame);
 
+/* --- Sound effects toggle --------------------------------------------- */
+
+const sfxToggle = document.getElementById('sfx-toggle');
+
+function syncSfxToggle() {
+  const on = !isMuted();
+  sfxToggle.setAttribute('aria-pressed', String(on));
+  sfxToggle.setAttribute('aria-label', on ? 'Mute sound effects' : 'Unmute sound effects');
+}
+
+sfxToggle?.addEventListener('click', () => {
+  setMuted(!isMuted());
+  syncSfxToggle();
+  sfx('toggle');
+});
+if (sfxToggle) syncSfxToggle();
+
 /* --- Dev panel: jump to any scene, poke stats, for testing ------------- */
 // Tunnel-only knots (character_creation, milestone, allocate_points) can't
 // be jumped to directly — see story/system/dev.ink for why — so they're
@@ -309,6 +345,7 @@ const devApplyStats = document.getElementById('devpanel-apply-stats');
 const devRestart = document.getElementById('devpanel-restart');
 
 devToggle?.addEventListener('click', () => {
+  sfx('toggle');
   const opening = devBody.hidden;
   devBody.hidden = !opening;
   devToggle.setAttribute('aria-expanded', String(opening));
